@@ -16,7 +16,7 @@ Valid answers include things like:
 Additional features make it simple to create questions in the form of grids or pyramids.
 
 
-Install instructions:
+# Install instructions:
 
 1. Install the moodle-local_freeform plugin from https://github.com/Edunao/moodle-local_freeform
 2. Copy the freeform directory to the question/type/ directory of your Moodle instance
