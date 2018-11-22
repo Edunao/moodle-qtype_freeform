@@ -1,0 +1,473 @@
+/*
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/**
+ * Freeform Question Type
+ *
+ * @copyright  2018 Edunao SAS (contact@edunao.com)
+ * @author     Sadge (daniel@edunao.com)
+ * @package    qtype_freeform
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/* basics */
+
+#freeform-preview {
+    min-width: 617px;
+    border: 1px solid rgba(0,0,0,.15);
+    padding: 5px;
+}
+
+.freeform-root {
+    width: 100%;
+}
+
+.freeform-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.freeform-spaced {
+    padding-right: 0.2rem;
+}
+
+.freeform-hidden {
+    display: none;
+}
+
+
+/* items with spacing round them */
+
+.freeform-implicit-multiply > .freeform-atom {
+    padding-right: 0.1rem;
+}
+
+.freeform-decorated > div.freeform-spaced:first-child {
+    padding-right: 0;
+}
+
+.freeform-macro-args .freeform-spaced,
+.freeform-subscript .freeform-spaced,
+.freeform-superscript .freeform-spaced {
+    padding-right: 0.1em;
+}
+
+.freeform-row > div.freeform-spaced:last-child {
+    padding-right: 0;
+}
+
+.freeform-int-digit-group {
+    padding-left: 0.15em;
+}
+
+div.freeform-decimal-digit-group {
+    padding-right: 0.1em;
+}
+
+
+/* fraction */
+
+.freeform-fraction {
+    margin: 0 0.1rem;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-self: center;
+}
+
+.freeform-fraction > .freeform-row:first-child {
+    border-bottom: solid black 1px;
+    display: flex;
+    flex-direction: row;
+}
+
+.freeform-fraction > .freeform-row {
+    justify-content: space-around;
+}
+
+/* sub scripts and super scripts */
+
+.freeform-superscript {
+    font-size: 50%;
+    align-self: flex-start;
+}
+.freeform-subscript {
+    font-size: 50%;
+    align-self: flex-end;
+}
+.freeform-macro {
+    margin: 0 0.1rem;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+.freeform-macro-args {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 50%;
+}
+
+/* squarer roots */
+
+.freeform-sqrt > div {
+    align-self: flex-start;
+    box-sizing: border-box;
+    border-top: solid black 1px;
+    border-left: 0;
+    margin-left: 0;
+    padding-left: 0;
+}
+.freeform-sqrt > div:first-child {
+    border-top: transparent;
+    border-right: 0;
+    margin-right: 0;
+    padding-right: 0;
+}
+
+/* Decoration modifiers */
+
+.freeform-error {
+    color:red;
+}
+
+.freeform-dec-red {
+    color:red;
+}
+.freeform-dec-green {
+    color:green;
+}
+.freeform-dec-blue {
+    color:blue;
+}
+.freeform-dec-grey {
+    color:grey;
+}
+.freeform-dec-black {
+    color:black;
+}
+.freeform-dec-yellow {
+    color:yellow;
+}
+.freeform-dec-bold {
+    font-weight: bold;
+}
+.freeform-dec--bold {
+    font-weight: normal;
+}
+.freeform-dec-italic {
+    font-style: italic;
+}
+.freeform-dec--italic {
+    font-style: normal;
+}
+.freeform-dec-underline {
+    text-decoration: underline;
+}
+.freeform-dec--underline {
+    text-decoration: none;
+}
+
+
+/* Special decoration modifier for representing question */
+label.question.expression .freeform-question {
+    color: black;
+    font-weight: bold;
+}
+label.question.expression.ffq-focus .freeform-question {
+    font-weight: normal;
+}
+label.question.expression.ffq-focus .freeform-question.ffq-focus {
+    color: black;
+    font-weight: bold;
+}
+
+
+/* The container div for the question and preview panes */
+
+.freeform table.freeform-grid {
+    width: 100%;
+}
+
+.freeform table.freeform-boxes {
+    width: 100%;
+}
+
+.freeform table.freeform-aligned {
+}
+
+.freeform .question {
+    background-color: #ffe;
+    color: grey;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.freeform .sublabel {
+    cursor: pointer;
+}
+
+.freeform label.question.expression {
+    font-weight: normal;
+}
+
+
+/* inline questions */
+
+label.freeform-inline.question {
+    padding: 0.1rem 1rem;
+    border: lightgrey solid 1px;
+    box-sizing: content-box;
+    margin: 1px;
+}
+
+
+/* tables for presenting questions */
+
+.freeform td,
+.freeform th {
+    margin: 0;
+    padding: 0.4rem;
+}
+
+.freeform th {
+    text-align: center;
+}
+
+.freeform th:first-child {
+    text-align: left;
+}
+
+
+/* tables for presenting questions in aligned form */
+
+.freeform-aligned .question {
+    border: lightgrey solid 1px;
+    padding: 0.1em 1rem;
+    margin: 1px;
+}
+
+
+/* tables for presenting questions in grid form */
+
+.freeform-grid td,
+.freeform-grid th {
+    padding: 0;
+    border: lightgrey solid 1px;
+}
+
+.freeform-grid label {
+    flex-grow: 1;
+    flex-basis: 1px;
+    margin: 2px;
+    padding: 0.5rem;
+}
+
+
+/* tables for presenting questions in full-width lines form */
+
+.freeform-lines {
+    width:100%;
+}
+
+.freeform-lines td,
+.freeform-lines th {
+    padding: 0;
+}
+
+.freeform-lines label {
+    flex-grow: 1;
+    flex-basis: 1px;
+    border-color: lightgrey;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 0 0 0 1px;
+    margin: 2px;
+    padding: 0.5rem;
+}
+
+.freeform-lines th:first-child label {
+    border-width: 0;
+}
+
+.freeform-lines tr {
+    border: lightgrey solid 1px;
+}
+.freeform-lines td label,
+.freeform-lines th label {
+    text-align: center;
+}
+
+.freeform-lines th:first-child label {
+    text-align: left;
+}
+
+
+/* tables for presenting questions in boxes form */
+
+.freeform-boxes td,
+.freeform-boxes th {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.freeform-boxes td label,
+.freeform-boxes th label {
+    display: inline-block;
+    text-align: center;
+    padding: 6px;
+}
+
+.freeform-boxes td label {
+    border: black solid 1px;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    overflow: hidden;
+    flex-basis: 10rem;
+}
+
+.freeform-boxes td label.ffq-focus {
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    margin-bottom: 0.5rem;
+    padding: 5px;
+}
+
+.freeform-boxes th label {
+    margin: 0;
+    width: 100%;
+    font-weight: bold;
+    background-color: #eee;
+}
+
+
+/* input zones for question entry */
+
+.freeform .input-set {
+    width: 100%;
+    white-space: nowrap;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    cursor: pointer;
+    height: 4rem;
+}
+
+
+/* input zones for question entry */
+
+.freeform .input-set.ffq-focus {
+    background-color: #fcfcfc;
+}
+
+.freeform .input-row {
+    display: inline-flex;
+    width: 0%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: white;
+}
+
+.freeform .input-row.ffq-focus {
+    width: 100%;
+}
+
+.freeform .input-col {
+    display: inline-block;
+    height: auto;
+    flex-grow: 1;
+    flex-basis: 1px;
+
+    padding: 1rem 0.6rem;
+    border: solid lightgrey 1px;
+
+    opacity: 0;
+}
+
+.freeform .input-row.ffq-focus .input-col {
+    opacity: 1;
+}
+
+.freeform .input-col.ffq-focus {
+    border: solid blue 1px;
+}
+
+.freeform .input-col input {
+    height: auto;
+    width: 100%;
+    font-size: large;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.freeform .input-col input:focus {
+    outline: none;
+}
+
+
+/* labels for question text (and their associated parents etc) */
+
+.freeform div.flexparent {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+.freeform label {
+    box-sizing: padding-box;
+    font-size: larger;
+}
+
+.freeform label.ffq-focus {
+    color: black;
+    font-weight: normal;
+    background-color: #fff;
+    border: solid blue 2px;
+    margin: 0;
+}
+
+.freeform label.expression.ffq-focus {
+    color: grey;
+}
+
+.freeform .question {
+    position: relative;
+}
+
+.freeform .question i.icon {
+    top: -0.6rem;
+    right: -0.65rem;
+    position: absolute;
+    background-color: #ffe;
+    border: 1px solid lightgrey;
+    border-radius: 50%;
+    padding: 2px;
+    margin-right: 0;
+}
+
+.freeform .feedback label {
+    cursor: auto;
+}
