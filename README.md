@@ -8,7 +8,7 @@ Example:
 Question text:
 What is the formula for distance as a function of speed and time? d=?(s t + 1/2 u t^2) 
 
-Valid answers includ things like:
+Valid answers include things like:
 (s t + 1/2 u t^2)
 (t²*u)/2 + t*s
 ...
